@@ -13,6 +13,7 @@ on:
         options:
           - "XIAOMI-4A_100M"
           - "XIAOMI-4A_GIGABit"
+          - "Openwrt"
       repo_branch:
         type: choice
         description: '版本分支'
@@ -134,7 +135,14 @@ jobs:
       run: |
         [ -e $FEEDS_FILE ] && rm -f openwrt/feeds.conf.default
         [ -e $FEEDS_FILE ] && mv $FEEDS_FILE openwrt/feeds.conf.default
-    
+        
+    - name: SSH connection to Actions
+      uses: P3TERX/ssh2actions@v1.0.0
+      if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh  != 'false') || contains(github.event.action, 'ssh')
+      env:
+        TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        
     - name: 加载固件配置
       run: mv $CONFIG_FILE openwrt/.config
       
