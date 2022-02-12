@@ -6,7 +6,14 @@ name: 编译固件_openwrt
 on: 
   repository_dispatch:
   workflow_dispatch:
+  
     inputs:
+      ssh:
+        description: 'SSH connection to Actions'
+        required: false
+        default: 'false'  
+  
+    
       resource_directory:
         type: choice
         description: '路由器资源目录'
